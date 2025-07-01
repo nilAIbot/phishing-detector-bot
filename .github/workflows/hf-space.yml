@@ -23,7 +23,7 @@ jobs:
           python - <<'PY'
           from huggingface_hub import upload_folder
           upload_folder(
-              repo_id="your-username/phishing-detector",
+              repo_id="nil09/phishing-detector",
               repo_type="space",
               folder_path=".",
               token="${HF_TOKEN}",
