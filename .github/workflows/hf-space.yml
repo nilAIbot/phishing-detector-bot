@@ -1,19 +1,32 @@
-name: Deploy to HF Spaces
+name: Deploy to HuggingFace Space
 on:
   push:
-    branches: [ main ]  # deploy on every push to main
+    branches: [ main ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Push to Space
-        uses: huggingface/huggingface-cli@v0
-        with:
-          args: >
-            upload
-            --repo-type space
-            --repo-id your-hf-username/phishing-detector
-            --token ${{ secrets.HF_TOKEN }}
-            --yes
-            .
+
+      # Small cache speeds up repeat builds
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+
+      - name: Install HuggingFace CLI
+        run: pip install --upgrade huggingface_hub[hf_transfer]
+
+      - name: Push to HF Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PY'
+          from huggingface_hub import upload_folder
+          upload_folder(
+              repo_id="your-username/phishing-detector",
+              repo_type="space",
+              folder_path=".",
+              token="${HF_TOKEN}",
+              commit_message="CI deploy from GitHub Action"
+          )
+          PY
