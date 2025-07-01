@@ -1,0 +1,17 @@
+# experiment + data dirs
+paths:
+  raw: "./../data/raw"
+  processed: "./../data/processed"
+  model_out: "./../artifacts/model.pt"
+
+# model + trainer
+model:
+  backbone: "bert-base-uncased"
+  max_len: 256
+train:
+  batch_size: 16
+  lr: 2e-5
+  epochs: 3
+  weight_decay: 1e-4
+  adv_training: true
+  adv_eps: 1e-5
