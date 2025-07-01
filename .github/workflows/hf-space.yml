@@ -1,0 +1,19 @@
+name: Deploy to HF Spaces
+on:
+  push:
+    branches: [ main ]  # deploy on every push to main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to Space
+        uses: huggingface/huggingface-cli@v0
+        with:
+          args: >
+            upload
+            --repo-type space
+            --repo-id your-hf-username/phishing-detector
+            --token ${{ secrets.HF_TOKEN }}
+            --yes
+            .
