@@ -1,0 +1,1 @@
+from src.models.phishsleuth_text import PhishSleuthText  # noqa: F401

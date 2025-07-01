@@ -1,0 +1,7 @@
+2025-07-01 11:08:47,463 [INFO] Using device: cpu
+2025-07-01 11:11:00,461 [INFO] Training Accuracy: 87.32%
+2025-07-01 11:11:02,186 [INFO] Validation Accuracy: 100.00%
+2025-07-01 11:12:02,691 [INFO] Training Accuracy: 100.00%
+2025-07-01 11:12:04,377 [INFO] Validation Accuracy: 100.00%
+2025-07-01 11:13:05,241 [INFO] Training Accuracy: 100.00%
+2025-07-01 11:13:07,087 [INFO] Validation Accuracy: 100.00%
