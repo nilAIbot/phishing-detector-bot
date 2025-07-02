@@ -1,8 +1,8 @@
 ---
 title: Phishing Detector
 emoji: 🛡️
-colorFrom: purple
-colorTo: indigo
+colorFrom: indigo
+colorTo: blue
 sdk: docker
 app_file: Dockerfile
 pinned: false
