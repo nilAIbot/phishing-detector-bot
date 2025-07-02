@@ -21,12 +21,14 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           python - <<'PY'
+          import os
           from huggingface_hub import upload_folder
-          upload_folder(
+          upload_folder( 
               repo_id="nil09/phishing-detector",
               repo_type="space",
               folder_path=".",
-              token="${HF_TOKEN}",
+              token=os.environ["HF_TOKEN"],
               commit_message="CI deploy from GitHub Action"
           )
           PY
+
