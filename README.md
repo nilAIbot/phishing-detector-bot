@@ -1,6 +1,6 @@
 ---
 title: Phishing Detector
-emoji: 🕵️‍♂️
+emoji: 🛡️
 colorFrom: purple
 colorTo: indigo
 sdk: docker
