@@ -1,17 +1,22 @@
 FROM python:3.10-slim
 
-# Install system deps only if you need them (e.g., git, gcc)
-# RUN apt-get update && apt-get install -y git  && rm -rf /var/lib/apt/lists/*
+# non‑root user (good practice)
+RUN useradd -m -u 1000 user
+USER user
+ENV PATH="/home/user/.local/bin:$PATH"
 
 WORKDIR /app
 
-# Upgrade pip first (avoids SSL/TLS issues on HF builder)
-RUN pip install --no-cache-dir --upgrade pip
+# install deps
+COPY --chown=user requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip \
+ && pip install --no-cache-dir -r requirements.txt
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# copy app code
+COPY --chown=user . .
 
-COPY . . . .
-
+# expose HF default port
 EXPOSE 7860
+
+# start FastAPI
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
