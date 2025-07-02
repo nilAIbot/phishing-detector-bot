@@ -1,34 +1,39 @@
 name: Deploy to HuggingFace Space
+
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]   # Deploy on every push to main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # Small cache speeds up repeat builds
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-      - name: Install HuggingFace CLI
-        run: pip install --upgrade huggingface_hub[hf_transfer]
+      - name: Install Hugging Face CLI with transfer support
+        run: |
+          pip install --upgrade "huggingface_hub[hf_transfer]>=0.24.0"
 
-      - name: Push to HF Space
+      - name: Upload to Hugging Face Space
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}  # You must create this secret in GitHub
         run: |
           python - <<'PY'
           import os
           from huggingface_hub import upload_folder
-          upload_folder( 
-              repo_id="nil09/phishing-detector",
+
+          upload_folder(
+              repo_id="nil09/phishing-detector",   # Format: username/space-name
               repo_type="space",
-              folder_path=".",
+              folder_path=".",                     # Upload current directory
               token=os.environ["HF_TOKEN"],
               commit_message="CI deploy from GitHub Action"
           )
           PY
-
