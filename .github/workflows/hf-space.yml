@@ -1,34 +1,37 @@
 name: Deploy to HuggingFace Space
+
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]   # redeploy every push to main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      # Small cache speeds up repeat builds
+      # cache Python and pip ‑‑ speeds up successive builds
       - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
+        with:
+          python-version: "3.11"
 
-      - name: Install HuggingFace CLI
-        run: pip install --upgrade huggingface_hub[hf_transfer]
+      - name: Install huggingface_hub
+        run: pip install --upgrade "huggingface_hub[hf_transfer]>=0.24.0"
 
       - name: Push to HF Space
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}   #  <-- make sure secret exists
         run: |
           python - <<'PY'
           import os
           from huggingface_hub import upload_folder
-          upload_folder( 
-              repo_id="nil09/phishing-detector",
+
+          upload_folder(
+              repo_id="nil09/phishing-detector",   # <username>/<space-name>
               repo_type="space",
-              folder_path=".",
+              folder_path=".",                     # push entire repo
               token=os.environ["HF_TOKEN"],
               commit_message="CI deploy from GitHub Action"
           )
           PY
-
